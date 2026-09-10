@@ -1,0 +1,132 @@
+nb_cell,cell_first_line,cell_lines,file,file_lines,note
+1,import ray,1,madewithml/data.py,3,
+1,import ray,2-4,diagnostics/llm_baselines.py,19-21,
+1,import ray,5,madewithml/models.py,6,
+1,import ray,6-7,madewithml/data.py,5-6,
+1,import ray,8-11,diagnostics/eda.py,15-18,
+1,import ray,12-13,madewithml/data.py,8-9,
+1,import ray,14,madewithml/models.py,8,
+1,import ray,15-16,madewithml/data.py,11-12,
+1,import ray,17,madewithml/utils.py,3,
+1,import ray,18,madewithml/data.py,14,
+1,import ray,19,diagnostics/llm_baselines.py,23,
+1,import ray,20,madewithml/config.py,3,
+1,import ray,21,madewithml/utils.py,5,
+1,import ray,22-26,madewithml/config.py,5-9,
+2,if ray.is_initialized():,1-2,madewithml/train.py,156-157,indented into train_model()
+3,"DATASET_LOC = ""https://raw.githubusercontent.com/GokuMohandas/Made-With-ML/main/datasets/dataset.csv""",1,madewithml/config.py,12,
+3,"DATASET_LOC = ""https://raw.githubusercontent.com/GokuMohandas/Made-With-ML/main/datasets/dataset.csv""",2-3,diagnostics/eda.py,26-27,"indented into main(); 1 line(s) wrapped in print(), see Modified lines"
+4,df.shape,1,diagnostics/eda.py,30,"indented into main(); 1 line(s) wrapped in print(), see Modified lines"
+5,df.columns,1,diagnostics/eda.py,33,"indented into main(); 1 line(s) wrapped in print(), see Modified lines"
+6,df.tag.value_counts(),1,diagnostics/eda.py,36,"indented into main(); 1 line(s) wrapped in print(), see Modified lines"
+7,"train_df, val_df = train_test_split(df,stratify=df.tag,test_size=TEST_SIZE,random_state=RANDOM_SEED)",1,diagnostics/eda.py,39,indented into main()
+8,train_df.shape,1,diagnostics/eda.py,42,"indented into main(); 1 line(s) wrapped in print(), see Modified lines"
+9,train_df.tag.value_counts(),1,diagnostics/eda.py,45,"indented into main(); 1 line(s) wrapped in print(), see Modified lines"
+10,val_df.shape,1,diagnostics/eda.py,48,"indented into main(); 1 line(s) wrapped in print(), see Modified lines"
+11,#verify if startify did its job,1-2,diagnostics/eda.py,51-52,"indented into main(); 1 line(s) wrapped in print(), see Modified lines"
+12,val_df.shape,1,diagnostics/eda.py,55,"indented into main(); 1 line(s) wrapped in print(), see Modified lines"
+13,all_tags=Counter(df['tag']),1-5,diagnostics/eda.py,58-62,"indented into main(); 1 line(s) wrapped in print(), see Modified lines"
+14,"plt.figure(figsize=(10,5))",1-3,diagnostics/eda.py,65-67,indented into main()
+15,# Plot tag frequencies #other alternative,1-9,diagnostics/eda.py,70-78,indented into main()
+16,#most frequent tokens for each tag,1-9,diagnostics/eda.py,81-89,indented into main()
+17,"df['text']=df['title']+ "" "" + df['description']",1,diagnostics/eda.py,92,indented into main()
+18,#lru cache can be used as well,1-17,madewithml/data.py,55-71,
+19,original_df=df.copy(),1-4,diagnostics/eda.py,95-98,indented into main()
+20,"df=df.drop(columns=['id','created_on','title','description'],errors='ignore')",1-4,diagnostics/eda.py,101-104,"indented into main(); 1 line(s) wrapped in print(), see Modified lines"
+21,#label encoding,1-5,diagnostics/eda.py,107-111,"indented into main(); 1 line(s) wrapped in print(), see Modified lines"
+22,df['tag']=df['tag'].map(class_to_index),1-2,diagnostics/eda.py,114-115,"indented into main(); 1 line(s) wrapped in print(), see Modified lines"
+23,"def decode(indices,index_to_class):",1-3,madewithml/data.py,108-110,
+24,"index_to_class={v:k for k,v in class_to_index.items()}",1-2,diagnostics/eda.py,118-119,"indented into main(); 1 line(s) wrapped in print(), see Modified lines"
+25,#bert tokenizer test,1-9,diagnostics/eda.py,122-130,indented into main()
+26,#method to tokenize,1-6,madewithml/data.py,74-79,
+27,tokenize(df.head(2)),1,diagnostics/eda.py,133,"indented into main(); 1 line(s) wrapped in print(), see Modified lines"
+28,"# here tokenize is the issue , it gets reloaded every batch , changing this function to class will load once per worker",1-10,madewithml/data.py,83-92,
+29,#just for refrence here. not used,1-23,diagnostics/ray_data_checks.py,20-42,
+30,"preprocess(df=train_df,class_to_index=class_to_index)",1,diagnostics/eda.py,136,"indented into main(); 1 line(s) wrapped in print(), see Modified lines"
+31,ray.data.DatasetContext.get_current().execution_options.preserve_order=True #deterministic,1-2,madewithml/train.py,159-160,indented into train_model()
+32,ray.cluster_resources(),1,diagnostics/ray_data_checks.py,48,"indented into main(); 1 line(s) wrapped in print(), see Modified lines"
+33,"ds=ray.data.read_csv(DATASET_LOC,override_num_blocks=int(ray.cluster_resources().get('CPU',1)))",1-3,diagnostics/ray_data_checks.py,51-53,"indented into main(); 1 line(s) wrapped in print(), see Modified lines"
+34,#ray dataset,1-21,madewithml/data.py,31-51,
+35,"train_ds,val_ds=stratify_split(ds,stratify='tag',test_size=TEST_SIZE)",1-2,diagnostics/ray_data_checks.py,56-57,indented into main()
+36,"#just to check  how to do in ray , earlier class to index can be used here",1-5,diagnostics/ray_data_checks.py,60-64,indented into main()
+37,# sample_ds_classOne = train_ds.map_batches(,1-11,diagnostics/ray_data_checks.py,67-77,indented into main()
+38,Lets establish baselines with zeroshot and few shot,1,diagnostics/llm_baselines.py,28,"markdown cell, copied as # comments"
+39,client =anthropic.Anthropic(),1-2,diagnostics/llm_baselines.py,31-32,
+40,# response= client.messages.create(,1-6,diagnostics/llm_baselines.py,122-127,indented into main()
+41,"DATASET_LOC = ""https://raw.githubusercontent.com/GokuMohandas/Made-With-ML/main/datasets/dataset.csv""",1-5,diagnostics/llm_baselines.py,130-134,indented into main()
+42,"HOLDOUT_LOC = ""https://raw.githubusercontent.com/GokuMohandas/Made-With-ML/main/datasets/holdout.csv""",1,madewithml/config.py,14,
+42,"HOLDOUT_LOC = ""https://raw.githubusercontent.com/GokuMohandas/Made-With-ML/main/datasets/holdout.csv""",2,diagnostics/llm_baselines.py,137,indented into main()
+43,"test_df[['title','tag']][:3]",1,diagnostics/llm_baselines.py,140,"indented into main(); 1 line(s) wrapped in print(), see Modified lines"
+44,# function that can predict tags for a given sample,1-20,diagnostics/llm_baselines.py,35-54,
+45,# List of dicts] as serving endpoint needs json format,1-3,diagnostics/llm_baselines.py,143-145,"indented into main(); 1 line(s) wrapped in print(), see Modified lines"
+46,#sanity,1-16,diagnostics/llm_baselines.py,148-163,indented into main()
+47,"def get_predictions(inputs,model,system_content,assistant_content=""""):",1-14,diagnostics/llm_baselines.py,57-70,
+48,"get_predictions(samples,model,system_context)",1,diagnostics/llm_baselines.py,166,"indented into main(); 1 line(s) wrapped in print(), see Modified lines"
+49,"def clean_predictions(y_pred,tags,default='other'):",1-8,diagnostics/llm_baselines.py,73-80,
+50,#plot ground truth and predictions,1-16,diagnostics/llm_baselines.py,83-98,
+51,"def evaluate(test_df,model,system_content,tags,assistant_content=''):",1-16,diagnostics/llm_baselines.py,101-116,
+52,#initialise dicts for analysis accros multiple models,1-3,diagnostics/llm_baselines.py,169-171,indented into main()
+53,"system_content = f""""""",1-5,diagnostics/llm_baselines.py,174-178,indented into main()
+54,method='zero_shot',1-5,diagnostics/llm_baselines.py,181-185,indented into main()
+55,"#results seems to good , verifying with classification report",1-3,diagnostics/llm_baselines.py,188-190,indented into main()
+56,#zeroshot on haiku,1-6,diagnostics/llm_baselines.py,193-198,indented into main()
+57,#pulling few shot examples from test set would be leakage,1-8,diagnostics/llm_baselines.py,201-208,"indented into main(); 1 line(s) wrapped in print(), see Modified lines"
+58,# Add assistant context,1-3,diagnostics/llm_baselines.py,211-213,indented into main()
+59,# Few-shot on sonnet 5,1-6,diagnostics/llm_baselines.py,216-221,indented into main()
+60,# Few-shot on haiku,1-6,diagnostics/llm_baselines.py,224-229,indented into main()
+61,"print(classification_report(y_true=y_test,y_pred=y_pred[method][model],target_names=tags))",1,diagnostics/llm_baselines.py,232,indented into main()
+62,"cm=confusion_matrix(y_test,y_pred[method][model],labels=tags)",1-2,diagnostics/llm_baselines.py,235-236,indented into main()
+63,"print(json.dumps(performance,indent=2))",1,diagnostics/llm_baselines.py,239,indented into main()
+64,by_model_context={},1-7,diagnostics/llm_baselines.py,242-248,"indented into main(); 1 line(s) wrapped in print(), see Modified lines"
+65,# Plotting the bar chart with metric scores on top of each bar,1-23,diagnostics/llm_baselines.py,251-273,indented into main()
+66,"#another way as data is already in wider format , using pandas",1-10,diagnostics/llm_baselines.py,276-285,indented into main()
+67,"#if was in longer formal then , example",1-17,diagnostics/llm_baselines.py,288-304,indented into main()
+68,import random,1-2,madewithml/utils.py,7-8,
+68,import random,3,madewithml/data.py,16,
+69,def set_seeds(seed=42):,1-10,madewithml/utils.py,15-24,
+69,def set_seeds(seed=42):,11,madewithml/train.py,162,indented into train_model()
+70,def load_data(num_samples=None):,1-6,madewithml/data.py,23-28,
+71,"# The leading underscores (_fit, _transform_pandas) are the hooks we override,always call the public fit / transform / fit_transform, which do bookkeeping and then call underscore methods",1-10,madewithml/data.py,95-104,
+72,import torch.nn as nn,1-2,madewithml/models.py,10-11,
+73,#PreTrained LLM,1-3,diagnostics/model_inspection.py,24-26,indented into main()
+74,llm,1,diagnostics/model_inspection.py,29,"indented into main(); 1 line(s) wrapped in print(), see Modified lines"
+75,print(list(llm.state_dict().keys())),1-2,diagnostics/model_inspection.py,32-33,indented into main()
+76,"# for name , p in llm.named_parameters():",1-10,diagnostics/model_inspection.py,36-45,indented into main()
+77,x=llm.named_parameters(),1-2,diagnostics/model_inspection.py,48-49,"indented into main(); 1 line(s) wrapped in print(), see Modified lines"
+78,y=list(llm.parameters()),1-2,diagnostics/model_inspection.py,52-53,"indented into main(); 1 line(s) wrapped in print(), see Modified lines"
+79,llm.state_dict(),1-2,diagnostics/model_inspection.py,56-57,"indented into main(); 1 line(s) wrapped in print(), see Modified lines"
+80,# Sample sanity,1-6,diagnostics/model_inspection.py,60-65,"indented into main(); 1 line(s) wrapped in print(), see Modified lines"
+81,import torch.nn.functional as F,1,madewithml/models.py,13,
+82,class FinetunedLLM(nn.Module):,1-50,madewithml/models.py,17-66,
+83,#intitialize model,1-4,diagnostics/model_inspection.py,68-71,indented into main()
+84,llm.encoder.layer[1].attention.self.key.weight,1,diagnostics/model_inspection.py,74,"indented into main(); 1 line(s) wrapped in print(), see Modified lines"
+85,from ray.train.torch import get_device as ray_get_device,1-2,madewithml/utils.py,10-11,
+85,from ray.train.torch import get_device as ray_get_device,3-10,madewithml/utils.py,27-34,
+86,"def pad_array(arr, dtype=np.int32):",1-6,madewithml/utils.py,38-43,
+87,def collate_fn(batch):,1-5,madewithml/utils.py,47-51,
+88,"# Sample batch| dataset > shard (1 per worker) > block > rows, batch is collection of rows",1-3,diagnostics/ray_data_checks.py,80-82,"indented into main(); 1 line(s) wrapped in print(), see Modified lines"
+89,# Ray 2.58: ray.air.Checkpoint / ray.air.session were removed.,1-12,madewithml/train.py,10-21,
+90,"def train_step(ds, batch_size, model, num_classes, loss_fn, optimizer):",1-14,madewithml/train.py,34-47,
+91,"def eval_step(ds, batch_size, model, num_classes, loss_fn):",1-14,madewithml/train.py,51-64,
+92,trainer.fit(),1-21,madewithml/train.py,68-88,"markdown cell, copied as # comments"
+93,# Training loop,1-44,madewithml/train.py,91-134,
+94,#if imbalanced,1-11,madewithml/train.py,136-146,
+95,# Train loop config,1-2,madewithml/train.py,177-178,indented into train_model()
+95,# Train loop config,3-8,madewithml/config.py,19-24,
+95,# Train loop config,9-10,madewithml/train.py,181-182,indented into train_model()
+96,# Workers -- this machine is CPU-only (torch.cuda.is_available() is False) with 4 physical,1-12,madewithml/train.py,186-197,indented into train_model()
+97,# Scaling config,1-7,madewithml/train.py,202-208,indented into train_model()
+98,# Run config,1-8,madewithml/train.py,210-217,indented into train_model()
+99,ds = load_data(),1,madewithml/train.py,164,"MODIFIED: passes num_samples (None = full dataset, as in the notebook)"
+99,ds = load_data(),2,madewithml/train.py,165,indented into train_model()
+100,# Preprocess,1-6,madewithml/train.py,168-173,indented into train_model()
+101,# Dataset config,1,madewithml/train.py,219,indented into train_model()
+101,# Dataset config,2,madewithml/train.py,23,
+101,# Dataset config,3-8,madewithml/train.py,221-226,indented into train_model()
+102,# The driver still holds two SciBERT copies from the exploration cells above (~0.9 GB).,1-2,diagnostics/model_inspection.py,77-78,indented into main()
+102,# The driver still holds two SciBERT copies from the exploration cells above (~0.9 GB).,3,madewithml/train.py,25,
+102,# The driver still holds two SciBERT copies from the exploration cells above (~0.9 GB).,4,diagnostics/model_inspection.py,80,indented into main()
+102,# The driver still holds two SciBERT copies from the exploration cells above (~0.9 GB).,5-17,madewithml/train.py,228-240,indented into train_model()
+103,results = trainer.fit(),1,madewithml/train.py,243,indented into train_model()
+104,results.metrics_dataframe,1,madewithml/train.py,245,MODIFIED: wrapped in print() (a bare expression shows nothing in a script)
+105,results.best_checkpoints,1,madewithml/train.py,247,MODIFIED: wrapped in print() (a bare expression shows nothing in a script)

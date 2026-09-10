@@ -1,0 +1,15 @@
+# Virtual environment
+venv/
+
+# Ray training runs / checkpoints (~440 MB each)
+ray_results/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Secrets (e.g. HF_TOKEN, API keys)
+.env
